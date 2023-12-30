@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Inter:wght@900&family=Michroma&family=Mukta:wght@800&family=Poppins:wght@500;600;700&family=Roboto:wght@400;700;900&family=Sono:wght@500&display=swap');
+
+:root {
+    --white: #fff;
+    --text-white: #eee;
+    --dark-blue: #00081d;
+    --grey: #36393e;
+    --sky-blue: #7289da;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+}
+
+/* top container */
+#container {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark-blue);
+    width: 100vw;
+    min-height: 100vh;
+    padding: 10px 50px;
+}
+
+textarea {
+    border: none;
+    resize: none;
+    outline: none;
+    overflow: auto;
+    background-color: var(--grey);
+    color: var(--text-white);
+    border-radius: 20px;
+}
+
+/* heading */
+h1 {
+    margin: 0;
+    margin-bottom: 15px;
+    color: var(--white);
+    text-align: center;
+    font-size: 3rem;
+}
+
+#msg-board {
+    width: 100%;
+    margin: 10px 0px;
+    border-radius: 20px;
+    /* message board height */
+    height: 77vh;
+    padding: 20px 20px;
+    background-color: var(--grey);
+
+}
+
+/* remove scroll bar in chromium bowsers */
+#msg-board::-webkit-scrollbar {
+    width: 0.0rem;
+}
+
+/* bottom */
+#user-controls {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+}
+
+/* message input textarea */
+#text-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding-top: 20px;
+    padding-left: 30px;
+    background-color: #424549;
+}
+
+#text-input, .send-btn {
+    height: 55px;
+}
+
+.send-btn {
+    width: 100%;
+    max-width: 100px;
+    position: relative;
+    border: none;
+    border-radius: 20px;
+    background-image: url(paperplane.svg);
+    background-color: var(--sky-blue);
+    min-width: 60px;
+}
+
+.send-btn:hover {
+    cursor: pointer;
+}
+
+/* airplane image */
+.send-btn > img {
+    position: absolute;
+    top: 6.5px;
+    left: 25px;
+    width: 2.8rem;
+}
+
+@media (max-width: 750px) {
+    body {
+        overflow: auto;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+    }
+
+    textarea {
+        font-size: 0.7rem;
+    }
+
+    #container {
+        padding: 0px 12px;
+    }
+
+    #msg-board {
+        margin-bottom: 0px;
+        padding-top: 20px;
+        /* height: 75vh; */
+    }
+
+    #text-input, .send-btn {
+        max-height: 48px;
+    }
+
+    #text-input {
+        padding-top: 17px;
+        padding-left: 20px;
+    }
+
+    .send-btn {
+        max-width: 60px;
+    }
+
+    #msg-board, #text-input, .send-btn {
+        border-radius: 14px;
+    }
+
+    #user-controls {
+        gap: 8px;
+    }
+
+    .send-btn > img {
+        width: 2.2rem;
+        top: 7px;
+        left: 12px;
+    }
+}

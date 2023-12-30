@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h1>ClientApp</h1>
+        <!-- messages display area -->
+        <textarea readonly id="msg-board">
+
+        </textarea>
+
+        <div id="user-controls">
+            <textarea name="text-input" id="text-input" onkeypress="preventMoving(event);" placeholder="Type your message here @chat" cols="10" rows="1"></textarea>
+            <button class="send-btn">
+                <img id="plane-icon" src="res/paperplane.svg" alt="">
+            </button>
+        </div>
+    </div>
+    <script src="scripts/index.js"></script> 
+</body>
+</html>
