@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <!-- modal -->
+    <!-- username modal -->
     <div class="modal" id="myModal">
         <div class="modal-content">
             <p class="invalid-msg">Enter a valid username</p>
@@ -24,9 +24,16 @@
         <h1>ChatterBox</h1>
         <!-- messages display area -->
         <div id="msg-board">
-            
+            <!-- <div class="message">
+                <h4 class="chat-username">The Prime</h4>
+                <p class="chat-user-msg">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio soluta asperiores eius nisi
+                    dignissimos. Neque corrupti, voluptatem, quasi, atque consequuntur animi distinctio asperiores
+                    dignissimos ut accusantium dicta architecto delectus quisquam!
+                </p>
+            </div> -->
         </div>
-
+        <!-- message sending input box, send message button -->
         <div id="user-controls">
             <textarea name="text-input" id="text-input" onkeypress="preventMoving(event);"
                 placeholder="Type your message here @chat" cols="10" rows="1"></textarea>
@@ -35,6 +42,7 @@
             </button>
         </div>
     </div>
+    <!-- client side socket.io cdn -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"
         integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz"
         crossorigin="anonymous"></script>

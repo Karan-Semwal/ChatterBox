@@ -225,20 +225,23 @@ button:hover {
     font-size: 11px;
 }
 
-
-
-
+/* ----------------------------------------------- */
 
 #msg-board {
     overflow-y: auto;
 }
-
 
 /* styling message on message board */
 .message {
     color: red;
     font-family: 'Inter', sans-serif;
     margin-top: 12px;
+}
+
+.current-user-msg {
+    background-color: #2c2f33;
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .chat-user-msg {

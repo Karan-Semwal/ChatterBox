@@ -79,12 +79,30 @@ function updateCurrClientMsgOnMsgBoard(msg) {
     // create new message element
     const newMessageSent = document.createElement('div')
     newMessageSent.classList.add('message')
+    // add styling for current user's mesage
+    newMessageSent.classList.add('current-user-msg')
     newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
-    <p class="chat-user-msg">
-        ${msg}
-    </p>`
+        <p class="chat-user-msg">
+            ${msg}
+        </p>`
     // append new message element
     msgBoard.append(newMessageSent)
+
+    // if (!isLastUserNameSame(gUserName)) {
+    //     const newMessageSent = document.createElement('div')
+    //     newMessageSent.classList.add('message')
+    //     // add styling for current user's mesage
+    //     newMessageSent.classList.add('current-user-msg')
+    //     newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
+    //     <p class="chat-user-msg">
+    //         ${msg}
+    //     </p>`
+    //     // append new message element
+    //     msgBoard.append(newMessageSent)
+    // }
+    // else {
+    //     onLastUserNameSame(msg)
+    // }
 }
 
 function updateRecievedMsgOnMsgBoard(msg) {
@@ -92,7 +110,7 @@ function updateRecievedMsgOnMsgBoard(msg) {
     const senderUserName = firstSplit[0]
     const senderUserNameColor = '#' + firstSplit[1]
     const senderMessage = firstSplit[2]
-    
+
     const newMessageSent = document.createElement('div')
     newMessageSent.classList.add('message')
     newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${senderUserNameColor}">${senderUserName}</h4>
@@ -145,4 +163,29 @@ function sendMessageToServer(msg) {
     let messageHeader = gUserName + gUserNameColor
     let msgForServer = messageHeader + '#' + msg
     socket.emit('userMessage', msgForServer)
+}
+
+
+// check if the latest message's username is same to the last message's username
+function isLastUserNameSame(latestSenderUserName) {
+    const msgBoard = document.querySelector('#msg-board');
+    const lastMessageElement = msgBoard.lastElementChild;
+    let userName;
+
+    if (lastMessageElement) {
+        const userNameElement = lastMessageElement.querySelector('.chat-username');
+        if (userNameElement) {
+            userName = userNameElement.textContent;
+        }
+    }
+    return latestSenderUserName === userName
+}
+
+function onLastUserNameSame(msg) {
+    const msgParagraphElement = document.createElement('p')
+    msgParagraphElement.classList.add('chat-user-msg');
+    msgParagraphElement.innerText = msg
+    const msgBoard = document.querySelector('#msg-board');
+    const lastMessageElement = msgBoard.lastElementChild;
+    lastMessageElement.appendChild(msgParagraphElement)
 }
