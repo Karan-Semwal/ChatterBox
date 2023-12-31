@@ -2,6 +2,8 @@ const msgBoard = $("#msg-board")
 const textInput = $('#text-input')
 const userNameInput = $('#username')
 
+// NOTE: sent message format: <username><#ff77ee>#<message>
+
 window.onload = function () {
     userNameInput.focus()
 }
@@ -21,8 +23,9 @@ const userNameColor = (function getRandomColor() {
     var letters = '23456789ABCD';
     var color = '#';
     for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+        color += letters[Math.floor(Math.random() * 12)];
     }
+    console.log(color)
     return color;
 })();
 

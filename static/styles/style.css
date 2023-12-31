@@ -229,7 +229,9 @@ button:hover {
 
 
 
-
+#msg-board {
+    overflow-y: auto;
+}
 
 
 /* styling message on message board */
