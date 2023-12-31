@@ -1,8 +1,15 @@
-const express = require('express')
-const port = 3000
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+const port = 3001
 
-const app = express()
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
 
-app.listen(port, () => {
-    console.log(`Server listening at port ${port}`)
-})
+server.listen(port, () => {
+  console.log(`listening on port ${port}`);
+});

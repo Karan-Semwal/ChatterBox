@@ -1,27 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client</title>
+    <title>Chatter Box</title>
     <link rel="stylesheet" href="styles/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body>
-    <div id="container">
-        <h1>ClientApp</h1>
-        <!-- messages display area -->
-        <textarea readonly id="msg-board">
 
-        </textarea>
+<body>
+    <!-- modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-content">
+            <p class="invalid-msg">Enter a valid username</p>
+            <input type="text" id="username" placeholder="username">
+            <button class="enter-chat-btn" onclick="enterChat()">Enter Chat</button>
+        </div>
+    </div>
+
+    <div id="container">
+        <h1>ChatterBox</h1>
+        <!-- messages display area -->
+        <!-- <textarea readonly id="msg-board">
+
+        </textarea> -->
+
+        <div id="msg-board">
+            <div class="message">
+                <h4 class="chat-username">The Prime</h4>
+                <p class="chat-user-msg">
+                    hey, how are you today
+                    I hope your good
+                    this messgae to for testing the styling
+                </p>
+            </div>
+            <div class="message">
+                <h4 class="chat-username">The Prime</h4>
+                <p class="chat-user-msg">
+                    hey, how are you today
+                    I hope your good
+                    this messgae to for testing the styling
+                </p>
+            </div>
+            <div class="message">
+                <h4 class="chat-username">The Prime</h4>
+                <p class="chat-user-msg">
+                    hey, how are you today
+                    I hope your good
+                    this messgae to for testing the styling
+                    hey, how are you today
+                    I hope your good
+                    this messgae to for testing the styling                     hey, how are you today
+                    I hope your good
+                    this messgae to for testing the styling
+                    hey, how are you today
+                    I hope your good
+                    this messgae to for testing the styling
+                </p>
+            </div>
+            <div class="message">
+                <h4 class="chat-username">The Prime</h4>
+                <p class="chat-user-msg">
+                    hey, how are you today
+                    I hope your good
+                    this messgae to for testing the styling
+                </p>
+            </div>
+        </div>
 
         <div id="user-controls">
-            <textarea name="text-input" id="text-input" onkeypress="preventMoving(event);" placeholder="Type your message here @chat" cols="10" rows="1"></textarea>
+            <textarea name="text-input" id="text-input" onkeypress="preventMoving(event);"
+                placeholder="Type your message here @chat" cols="10" rows="1"></textarea>
             <button class="send-btn">
                 <img id="plane-icon" src="res/paperplane.svg" alt="">
             </button>
         </div>
     </div>
-    <script src="scripts/index.js"></script> 
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"
+        integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz"
+        crossorigin="anonymous"></script>
 </body>
+<script src="scripts/index.js"></script>
+
 </html>
