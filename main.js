@@ -24,11 +24,10 @@ io.on('connection', (socket) => {
     // receive message from users
     socket.on('userMessage', msg => {
         console.log(msg)
+        // broadcast received message to everyone
         socket.broadcast.emit('message', msg)
     })
 });
-
-
 
 server.listen(port, () => {
     console.log(`listening on port ${port}`);

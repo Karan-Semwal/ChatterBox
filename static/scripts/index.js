@@ -11,34 +11,42 @@ window.onload = function () {
 window.onresize = function () {
     if (window.innerWidth <= 750) {
         textInput.attr({ placeholder: '@message' })
+    } else {
+        textInput.attr({ placeholder: 'Type your message here @chat' })
     }
 }
 
 // global variables
 let gUserName;
 let gClientMessage;
-
+const gUserNameCharLimit = 25;
 // color of username text
-const userNameColor = (function getRandomColor() {
-    var letters = '23456789ABCD';
+const gUserNameColor = (function getRandomColor() {
+    var letters = '456789ABCD';
     var color = '#';
     for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 12)];
+        color += letters[Math.floor(Math.random() * 10)];
     }
-    console.log(color)
     return color;
 })();
 
-// NOTE: username must not be empty and not have a '#'
 function enterChat() {
     gUserName = userNameInput.val();
-    if (gUserName.trim() !== "" && gUserName.indexOf('#') == -1) {
+    if (isUserNameValid(gUserName)) {
         $('#myModal').css('display', 'none')
+        textInput.focus()
     } else {
-        console.log("Please enter a valid username.");
         onInvalidUserName()
     }
-    console.log(gUserName)
+}
+
+// validate user name
+function isUserNameValid(username) {
+    // NOTE: username must not be empty and not have a '#'
+    // and username length should be less than limit
+    return (username.trim() !== "") &&
+        (username.indexOf('#') == -1) &&
+        (username.length <= gUserNameCharLimit)
 }
 
 function onInvalidUserName() {
@@ -50,11 +58,9 @@ function onInvalidUserName() {
 function sendMessage() {
     gClientMessage = $('#text-input').val()
     if (gClientMessage != '') {
-        console.log(gClientMessage)
-
         sendMessageToServer(gClientMessage)
         // update msg board for client
-        updateMsgBoardForClient(gClientMessage)
+        updateCurrClientMsgOnMsgBoard(gClientMessage)
         // scroll to bottom
         scrollToBottom()
         // clear text input
@@ -69,11 +75,11 @@ function scrollToBottom() {
     msgBoard.scrollTop(msgBoard.prop("scrollHeight"));
 }
 
-function updateMsgBoardForClient(msg) {
+function updateCurrClientMsgOnMsgBoard(msg) {
     // create new message element
     const newMessageSent = document.createElement('div')
     newMessageSent.classList.add('message')
-    newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${userNameColor}">${gUserName}</h4>
+    newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
     <p class="chat-user-msg">
         ${msg}
     </p>`
@@ -81,8 +87,20 @@ function updateMsgBoardForClient(msg) {
     msgBoard.append(newMessageSent)
 }
 
-function onSuccessSend() {
-
+function updateRecievedMsgOnMsgBoard(msg) {
+    let firstSplit = msg.split('#')
+    const senderUserName = firstSplit[0]
+    const senderUserNameColor = '#' + firstSplit[1]
+    const senderMessage = firstSplit[2]
+    
+    const newMessageSent = document.createElement('div')
+    newMessageSent.classList.add('message')
+    newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${senderUserNameColor}">${senderUserName}</h4>
+    <p class="chat-user-msg">
+        ${senderMessage}
+    </p>`
+    // append new message element
+    msgBoard.append(newMessageSent)
 }
 
 // prevent new line in textarea
@@ -90,7 +108,6 @@ function preventMoving(event) {
     let key = event.keyCode;
     if (event.keyCode == 13) {
         event.preventDefault();
-        console.log('foo')
     }
 }
 
@@ -120,11 +137,12 @@ const socket = io();
 
 // receiving message from server
 socket.on('message', message => {
-    console.log(message)
-    updateMsgBoardForClient(message)
+    updateRecievedMsgOnMsgBoard(message)
 })
 
 // sending message to the server
 function sendMessageToServer(msg) {
-    socket.emit('userMessage', msg)
+    let messageHeader = gUserName + gUserNameColor
+    let msgForServer = messageHeader + '#' + msg
+    socket.emit('userMessage', msgForServer)
 }
