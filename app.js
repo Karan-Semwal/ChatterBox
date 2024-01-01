@@ -7,11 +7,11 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const port = 3000
 
-app.use(express.static(path.join(__dirname, 'static')))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // serve static files
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/static/chat.html')
+    res.sendFile(__dirname + '/public/views/chat.html')
 })
 
 // when users connect
@@ -23,12 +23,11 @@ io.on('connection', (socket) => {
 
     // receive message from users
     socket.on('userMessage', msg => {
-        console.log(msg)
         // broadcast received message to everyone
         socket.broadcast.emit('message', msg)
     })
 });
 
 server.listen(port, () => {
-    console.log(`listening on port ${port}`);
+    console.log(`Server is listening on port ${port}`);
 });

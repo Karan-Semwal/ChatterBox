@@ -1,3 +1,5 @@
+import * as utils from './utils.js'
+
 const msgBoard = $("#msg-board")
 const textInput = $('#text-input')
 const userNameInput = $('#username')
@@ -19,34 +21,19 @@ window.onresize = function () {
 // global variables
 let gUserName;
 let gClientMessage;
-const gUserNameCharLimit = 25;
-// color of username text
-const gUserNameColor = (function getRandomColor() {
-    var letters = '456789ABCD';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 10)];
-    }
-    return color;
-})();
+const gUserNameColor = utils.getRandomColor()
+
+// enter chat after submitting username
+$('.enter-chat-btn').click(enterChat)
 
 function enterChat() {
     gUserName = userNameInput.val();
-    if (isUserNameValid(gUserName)) {
+    if (utils.isUserNameValid(gUserName)) {
         $('#myModal').css('display', 'none')
         textInput.focus()
     } else {
         onInvalidUserName()
     }
-}
-
-// validate user name
-function isUserNameValid(username) {
-    // NOTE: username must not be empty and not have a '#'
-    // and username length should be less than limit
-    return (username.trim() !== "") &&
-        (username.indexOf('#') == -1) &&
-        (username.length <= gUserNameCharLimit)
 }
 
 function onInvalidUserName() {
@@ -76,18 +63,6 @@ function scrollToBottom() {
 }
 
 function updateCurrClientMsgOnMsgBoard(msg) {
-    // create new message element
-    // const newMessageSent = document.createElement('div')
-    // newMessageSent.classList.add('message')
-    // // add styling for current user's mesage
-    // newMessageSent.classList.add('current-user-msg')
-    // newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
-    //     <p class="chat-user-msg">
-    //         ${msg}
-    //     </p>`
-    // // append new message element
-    // msgBoard.append(newMessageSent)
-
     if (!isLastUserNameSame(gUserName, gUserNameColor)) {
         const newMessageSent = document.createElement('div')
         newMessageSent.classList.add('message')
@@ -110,7 +85,6 @@ function updateRecievedMsgOnMsgBoard(msg) {
     const senderUserName = firstSplit[0]
     const senderUserNameColor = '#' + firstSplit[1]
     const senderMessage = firstSplit[2]
-    // console.log(senderUserNameColor)
 
     if (!isLastUserNameSame(senderUserName, senderUserNameColor)) {
         const newMessageSent = document.createElement('div')
@@ -121,17 +95,8 @@ function updateRecievedMsgOnMsgBoard(msg) {
     </p>`
         // append new message element
         msgBoard.append(newMessageSent)
-        // console.log('not same last username')
     } else {
         onLastUserNameSame(senderMessage)
-    }
-}
-
-// prevent new line in textarea
-function preventMoving(event) {
-    let key = event.keyCode;
-    if (event.keyCode == 13) {
-        event.preventDefault();
     }
 }
 
@@ -139,7 +104,8 @@ function preventMoving(event) {
 window.addEventListener('keypress', (e) => {
     if (textInput.is(':focus')) {
         if (e.key === 'Enter') {
-            // preventMoving(e)
+            // to stop textarea's default Enter key even behaviour
+            utils.preventMoving(e)
             sendMessage()
         }
     }
@@ -180,7 +146,7 @@ function isLastUserNameSame(latestSenderUserName, color) {
 
     if (lastMessageElement) {
         const userNameElement = lastMessageElement.querySelector('.chat-username');
-        lastMsgHeadingElementColor = rgb2hex(userNameElement.style.color)
+        lastMsgHeadingElementColor = utils.rgb2hex(userNameElement.style.color)
         if (userNameElement) {
             userName = userNameElement.textContent;
         }
@@ -202,19 +168,5 @@ function onLastUserNameSame(msg) {
     const lastMessageElement = msgBoard.lastElementChild;
     if (lastMessageElement) {
         lastMessageElement.appendChild(msgParagraphElement)
-    }
-}
-
-function rgb2hex(rgb) {
-    if (rgb.search("rgb") == -1) {
-        return rgb;
-    } else if (rgb == 'rgba(0, 0, 0, 0)') {
-        return 'transparent';
-    } else {
-        rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
-        function hex(x) {
-            return ("0" + parseInt(x).toString(16)).slice(-2).toUpperCase(); // Convert to uppercase
-        }
-        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
     }
 }

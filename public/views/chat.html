@@ -16,7 +16,7 @@
         <div class="modal-content">
             <p class="invalid-msg">Enter a valid username</p>
             <input type="text" id="username" placeholder="username">
-            <button class="enter-chat-btn" onclick="enterChat()">Enter Chat</button>
+            <button class="enter-chat-btn">Enter Chat</button>
         </div>
     </div>
 
@@ -35,7 +35,7 @@
         </div>
         <!-- message sending input box, send message button -->
         <div id="user-controls">
-            <textarea name="text-input" id="text-input" onkeypress="preventMoving(event);"
+            <textarea name="text-input" id="text-input"
                 placeholder="Type your message here @chat" cols="10" rows="1"></textarea>
             <button class="send-btn">
                 <img id="plane-icon" src="res/paperplane.svg" alt="">
@@ -47,6 +47,6 @@
         integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz"
         crossorigin="anonymous"></script>
 </body>
-<script src="scripts/index.js"></script>
+<script type="module" src="scripts/index.js"></script>
 
 </html>
