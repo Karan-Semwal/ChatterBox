@@ -77,32 +77,32 @@ function scrollToBottom() {
 
 function updateCurrClientMsgOnMsgBoard(msg) {
     // create new message element
-    const newMessageSent = document.createElement('div')
-    newMessageSent.classList.add('message')
-    // add styling for current user's mesage
-    newMessageSent.classList.add('current-user-msg')
-    newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
-        <p class="chat-user-msg">
-            ${msg}
-        </p>`
-    // append new message element
-    msgBoard.append(newMessageSent)
-
-    // if (!isLastUserNameSame(gUserName)) {
-    //     const newMessageSent = document.createElement('div')
-    //     newMessageSent.classList.add('message')
-    //     // add styling for current user's mesage
-    //     newMessageSent.classList.add('current-user-msg')
-    //     newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
+    // const newMessageSent = document.createElement('div')
+    // newMessageSent.classList.add('message')
+    // // add styling for current user's mesage
+    // newMessageSent.classList.add('current-user-msg')
+    // newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
     //     <p class="chat-user-msg">
     //         ${msg}
     //     </p>`
-    //     // append new message element
-    //     msgBoard.append(newMessageSent)
-    // }
-    // else {
-    //     onLastUserNameSame(msg)
-    // }
+    // // append new message element
+    // msgBoard.append(newMessageSent)
+
+    if (!isLastUserNameSame(gUserName, gUserNameColor)) {
+        const newMessageSent = document.createElement('div')
+        newMessageSent.classList.add('message')
+        // add styling for current user's mesage
+        newMessageSent.classList.add('current-user-msg')
+        newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${gUserNameColor}">${gUserName}</h4>
+        <p class="chat-user-msg">
+            ${msg}
+        </p>`
+        // append new message element
+        msgBoard.append(newMessageSent)
+    }
+    else {
+        onLastUserNameSame(msg)
+    }
 }
 
 function updateRecievedMsgOnMsgBoard(msg) {
@@ -110,15 +110,21 @@ function updateRecievedMsgOnMsgBoard(msg) {
     const senderUserName = firstSplit[0]
     const senderUserNameColor = '#' + firstSplit[1]
     const senderMessage = firstSplit[2]
+    // console.log(senderUserNameColor)
 
-    const newMessageSent = document.createElement('div')
-    newMessageSent.classList.add('message')
-    newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${senderUserNameColor}">${senderUserName}</h4>
+    if (!isLastUserNameSame(senderUserName, senderUserNameColor)) {
+        const newMessageSent = document.createElement('div')
+        newMessageSent.classList.add('message')
+        newMessageSent.innerHTML = `<h4 class="chat-username" style="color:${senderUserNameColor}">${senderUserName}</h4>
     <p class="chat-user-msg">
         ${senderMessage}
     </p>`
-    // append new message element
-    msgBoard.append(newMessageSent)
+        // append new message element
+        msgBoard.append(newMessageSent)
+        // console.log('not same last username')
+    } else {
+        onLastUserNameSame(senderMessage)
+    }
 }
 
 // prevent new line in textarea
@@ -165,20 +171,27 @@ function sendMessageToServer(msg) {
     socket.emit('userMessage', msgForServer)
 }
 
-
 // check if the latest message's username is same to the last message's username
-function isLastUserNameSame(latestSenderUserName) {
+function isLastUserNameSame(latestSenderUserName, color) {
     const msgBoard = document.querySelector('#msg-board');
-    const lastMessageElement = msgBoard.lastElementChild;
+    const lastMessageElement = msgBoard.lastElementChild
+    let lastMsgHeadingElementColor;
     let userName;
 
     if (lastMessageElement) {
         const userNameElement = lastMessageElement.querySelector('.chat-username');
+        lastMsgHeadingElementColor = rgb2hex(userNameElement.style.color)
         if (userNameElement) {
             userName = userNameElement.textContent;
         }
+    } else {
+        return false
     }
-    return latestSenderUserName === userName
+    // match last msg's usernames
+    if (latestSenderUserName === userName) {
+        // match last same username's colors
+        return lastMsgHeadingElementColor === color
+    }
 }
 
 function onLastUserNameSame(msg) {
@@ -187,5 +200,21 @@ function onLastUserNameSame(msg) {
     msgParagraphElement.innerText = msg
     const msgBoard = document.querySelector('#msg-board');
     const lastMessageElement = msgBoard.lastElementChild;
-    lastMessageElement.appendChild(msgParagraphElement)
+    if (lastMessageElement) {
+        lastMessageElement.appendChild(msgParagraphElement)
+    }
+}
+
+function rgb2hex(rgb) {
+    if (rgb.search("rgb") == -1) {
+        return rgb;
+    } else if (rgb == 'rgba(0, 0, 0, 0)') {
+        return 'transparent';
+    } else {
+        rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+        function hex(x) {
+            return ("0" + parseInt(x).toString(16)).slice(-2).toUpperCase(); // Convert to uppercase
+        }
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
 }
