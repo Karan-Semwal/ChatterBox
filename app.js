@@ -7,11 +7,11 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const port = 3000
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, '/../public')))
 
 // serve static files
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/views/chat.html')
+    res.sendFile(__dirname + '/../public/views/chat.html')
 })
 
 // when users connect
