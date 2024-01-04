@@ -5,7 +5,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const port = 3000
+const port = process.env.PORT || 3000
 
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -17,9 +17,6 @@ app.get('/', (req, res) => {
 // when users connect
 io.on('connection', (socket) => {
     console.log('User connected!');
-
-    // send welcome message to user
-    // socket.emit('message', 'Welcome to ChatterBox')
 
     // receive message from users
     socket.on('userMessage', msg => {
